@@ -11,13 +11,13 @@ that differ from whats in defaults.yaml
 {% set flavor_map = salt['grains.filter_by'](
   {
     'Debian': {
-      'package_extra': ['libpam-runtime', 'libpam-sss', 'libnss-sss'],
+      'package_extras': ['libpam-runtime', 'libpam-sss', 'libnss-sss'],
     },
     'FreeBSD': {
-      'package_extra': False,
+      'package_extras': False,
     },
     'RedHat': {
-      'package_extra': ['authconfig'],
+      'package_extras': ['authconfig'],
     }
   },
   grain='os_family',
