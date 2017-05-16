@@ -1,0 +1,35 @@
+# -*- coding: utf-8 -*-
+# vim: ft=jinja
+
+{## Start with  defaults from defaults.sls ##}
+{% import_yaml 'sssd/defaults.yaml' as default_settings %}
+
+{##
+Setup variable using grains['os_family'] based logic, only add key:values here
+that differ from whats in defaults.yaml
+##}
+{% set flavor_map = salt['grains.filter_by'](
+  {
+    'Debian': {
+      'package_extra': ['libpam-runtime', 'libpam-sss', 'libnss-sss'],
+    },
+    'FreeBSD': {
+      'package_extra': False,
+    },
+    'RedHat': {
+      'package_extra': ['authconfig'],
+    }
+  },
+  grain='os_family',
+  merge=salt['pillar.get']('sssd:lookup')
+) %}
+
+{## Merge the flavor_map over the default settings ##}
+{% do default_settings.sssd.update(flavor_map) %}
+
+{## Merge in changes from the sssd:lookup pillar ##}
+{% set sssd_settings = salt['pillar.get'](
+  'sssd',
+  default=default_settings.sssd,
+  merge=True
+) %}

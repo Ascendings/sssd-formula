@@ -1,0 +1,12 @@
+sssd:
+  # package options
+  package_name: sssd
+  package_status: installed
+
+  # configuration file options
+  config_path: /etc/sssd/sssd.conf
+
+  # service options
+  service_name: sssd
+  service_status: running
+
