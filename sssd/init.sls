@@ -13,6 +13,9 @@ sssd_package_extras:
 sssd_config:
   file.managed:
     - name: {{ sssd.config_path }}
+    - template: jinja
+    - source: salt://sssd/files/sssd.conf
+    - mode: {{ sssd.config_mode }}
     - require:
       - pkg: sssd_package
 
